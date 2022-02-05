@@ -4,10 +4,10 @@
   "description": "公司进行内部技术分享时准备的项目，将会简要的实现React框架。 Prepared for company technology sharing, I will implements React framework agilely.",
   "main": "index.js",
   "devDependencies": {
-    "parcel-bundler": "^1.12.5",
     "babel-core": "^6.26.3",
     "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.7.0"
+    "babel-preset-env": "^1.7.0",
+    "parcel-bundler": "^1.12.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
