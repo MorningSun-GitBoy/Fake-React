@@ -1,19 +1,23 @@
 const FReactDom ={
     render
 };
-function render(element,context){
+function render(element,container){
     console.log("element",element);
-    console.log("context",context);
-    if(!context){
+    console.log("container",container);
+    if(!container){
         console.error("Root dom is wrong,please check");
         return;
+    }else{
+        commit(container,processElement(element));
     }
+}
+function processElement(element){
     if(typeof element === "string"){
-        context.appendChild(document.createTextNode(element));
+        return document.createTextNode(element);
     }else if(typeof element === "object"){
-        const {tag,attrs:config,children} = element;
-        if(typeof tag === "string"){
-            const dom = document.createElement(tag);
+        const {type,config,children} = element;
+        if(typeof type === "string"){
+            const dom = document.createElement(type);
             if(config){
                 Object.keys(config).forEach(key => {
                     let value = config[key];
@@ -22,9 +26,12 @@ function render(element,context){
             }
             children.forEach(child => render(child,dom))
             console.log(dom)
-            context.appendChild(dom);
+            return dom;
         }
     }
+}
+function commit(dom,element){
+    dom.appendChild(element);
 }
 function setAttribute(dom,key,value){
     if(!dom) return;
