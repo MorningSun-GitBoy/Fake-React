@@ -1,5 +1,8 @@
+import Component from "../f-react-component";
+
 const FReact = {
-    createElement
+    createElement,
+    Component
 };
 function createElement(type, attrs, ...children){
     console.log("type",type);

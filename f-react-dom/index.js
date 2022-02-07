@@ -1,3 +1,5 @@
+import Component from "../f-react-component";
+
 const FReactDom ={
     render
 };
@@ -12,7 +14,7 @@ function render(element,container){
     }
 }
 function processElement(element){
-    if(typeof element === "string"){
+    if(typeof element === "string" || typeof element === "number"){
         return document.createTextNode(element);
     }else if(typeof element === "object"){
         const {type,config,children} = element;
@@ -27,10 +29,19 @@ function processElement(element){
             children.forEach(child => render(child,dom))
             console.log(dom)
             return dom;
+        }else if(typeof type === "function"){
+            console.log("component",type);
+            //类组件处理
+            if(type.prototype && type.prototype.render){
+                return processElement(new type(config).render());
+            }
+            //函数式组件处理
+            else return processElement(type());
         }
     }
 }
 function commit(dom,element){
+    console.log('rootElement',element)
     dom.appendChild(element);
 }
 function setAttribute(dom,key,value){
