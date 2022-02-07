@@ -1,13 +1,13 @@
 const FReact = {
     createElement
 };
-function createElement(tag,attrs,...children){
-    console.log("tag",tag);
+function createElement(type, attrs, ...children){
+    console.log("type",type);
     console.log("attrs",attrs);
     console.log("children",children);
     return {
-        tag,
-        attrs,
+        type,
+        config:attrs,
         children
     };
 }
