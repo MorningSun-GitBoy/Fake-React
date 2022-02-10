@@ -1,3 +1,5 @@
+import {commit} from "../f-react-dom";
+
 class Component{
     constructor(props={}) {
         this.props = props;
@@ -8,6 +10,8 @@ class Component{
         keys.forEach(key => {
             this.state[key] = nextState[key]
         })
+        console.log('this pointer',this);
+        commit(null,this);
     }
 }
 export default Component;

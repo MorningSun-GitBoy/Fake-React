@@ -4,8 +4,8 @@ const FReactDom ={
     render
 };
 function render(element,container){
-    console.log("element",element);
-    console.log("container",container);
+    //console.log("element",element);
+    //console.log("container",container);
     if(!container){
         console.error("Root dom is wrong,please check");
         return;
@@ -26,23 +26,50 @@ function processElement(element){
                     setAttribute(dom,key,value);
                 })
             }
-            children.forEach(child => render(child,dom))
-            console.log(dom)
+            children.forEach(child => commit(dom,processElement(child)))
+            //console.log(dom)
             return dom;
         }else if(typeof type === "function"){
-            console.log("component",type);
+            //console.log("component",type);
             //类组件处理
             if(type.prototype && type.prototype.render){
-                return processElement(new type(config).render());
+                let component = new type(config);
+                //执行生命周期
+                if(!component.source){
+                    if (component.componentWillMount) {
+                        component.componentWillMount()
+                    }
+                }else{
+                    if(component.componentWillReceiveProps){
+                        component.componentWillReceiveProps(config);
+                    }
+                }
+                let source = processElement(component.render());
+                component.source = source;
+                if (component.componentDidMount) {
+                    component.componentDidMount()
+                }
+                return source;
             }
             //函数式组件处理
             else return processElement(type());
         }
     }
 }
-function commit(dom,element){
-    console.log('rootElement',element)
-    dom.appendChild(element);
+export function commit(dom,element){
+    //console.log('rootElement',element)
+    let {source} = element
+    if(source){
+        if(element.componentWillUpdate){
+            element.componentWillUpdate();
+        }
+        dom = source.parentNode;
+        element.source = processElement(element.render());
+        if(element.componentDidUpdate){
+            element.componentDidUpdate();
+        }
+        dom.replaceChild(element.source,source);
+    }else dom.appendChild(element);
 }
 function setAttribute(dom,key,value){
     if(!dom) return;
