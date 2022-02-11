@@ -13,6 +13,9 @@ class Child extends FReact.Component{
     componentWillReceiveProps(nextProps){
         console.log("child receive props",nextProps);
     }
+    componentWillUnmount(){
+        console.log("Child will unmount");
+    }
     render(){
         return (
             <div>
